@@ -1,7 +1,6 @@
 # Sistem Akademik Kampus
 
-Aplikasi CRUD data mahasiswa menggunakan **Python Flask** dan **Supabase**.
-
+Aplikasi CRUD data mahasiswa menggunakan 
 ---
 
 ## 1. Persiapan
