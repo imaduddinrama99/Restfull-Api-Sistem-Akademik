@@ -1,5 +1,27 @@
 # Sistem Akademik Kampus 
 
+
+# Struktur Direktori
+
+```text
+AKADEMIK/
+│
+├── backend/                     # REST API Server
+│   ├── routes/                  # URL Endpoints (Flask Blueprints)
+│   ├── services/                # Logika Database (Supabase)
+│   ├── app.py                   # Entry Point Server
+│   ├── config.py                # Konfigurasi Database
+│   ├── requirements.txt         # Daftar Library Python
+│   └── .env                     # Kredensial Rahasia (Tidak di-push ke Git)
+│
+└── frontend/                    # Client UI
+    ├── index.html               # Halaman Login
+    ├── dashboard.html           # Halaman Dashboard
+    └── edit.html                # Halaman Edit Data
+```
+
+---
+
 ## Fitur Utama
 
 * **Autentikasi Pengguna** — Sistem Login & Logout yang aman menggunakan token JWT.
@@ -89,26 +111,6 @@ Gunakan akun berikut untuk mencoba aplikasi:
 
 ---
 
-# Struktur Direktori
-
-```text
-AKADEMIK/
-│
-├── backend/                     # REST API Server
-│   ├── routes/                  # URL Endpoints (Flask Blueprints)
-│   ├── services/                # Logika Database (Supabase)
-│   ├── app.py                   # Entry Point Server
-│   ├── config.py                # Konfigurasi Database
-│   ├── requirements.txt         # Daftar Library Python
-│   └── .env                     # Kredensial Rahasia (Tidak di-push ke Git)
-│
-└── frontend/                    # Client UI
-    ├── index.html               # Halaman Login
-    ├── dashboard.html           # Halaman Dashboard
-    └── edit.html                # Halaman Edit Data
-```
-
----
 
 ## Catatan
 
