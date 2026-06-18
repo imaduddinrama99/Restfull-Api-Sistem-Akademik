@@ -1,63 +1,122 @@
-# Sistem Akademik Kampus
+# Sistem Akademik Kampus 
 
-Aplikasi CRUD (Create, Read, Update, Delete) data mahasiswa sederhana yang dibangun menggunakan framework Python Flask dan integrasi basis data cloud Supabase.
+## Fitur Utama
+
+* **Autentikasi Pengguna** — Sistem Login & Logout yang aman menggunakan token JWT.
+* **CRUD Terintegrasi** — Tambah, Baca, Perbarui, dan Hapus data mahasiswa secara real-time.
+* **Dark Mode Support** — Antarmuka responsif yang mendukung tema gelap dan terang.
+* **Modular Architecture** — Backend distrukturkan menggunakan Flask Blueprint (Routes & Services).
 
 ---
 
-## 1. Persiapan & Instalasi
+# Cara Instalasi & Menjalankan Aplikasi
 
-Jalankan perintah berikut di Terminal atau Command Prompt (CMD) secara berurutan untuk menyiapkan proyek dan mengisolasi library menggunakan Virtual Environment:
+Ikuti langkah-langkah berikut untuk menjalankan aplikasi di komputer lokal.
+
+## 1. Persiapan Backend (Flask API)
+
+Pastikan Python sudah terinstal di komputer Anda.
+
+### Masuk ke folder backend
 
 ```bash
-# 1. Buat folder baru dan masuk ke dalamnya
-mkdir sistem-akademik && cd sistem-akademik
-
-# 2. Buat lingkungan terisolasi (Virtual Environment)
-python -m venv venv
-
-# 3. Aktifkan Virtual Environment sesuai OS kamu
-# Windows (PowerShell):
-venv\Scripts\activate
-
-# Windows (CMD):
-venv\Scripts\activate.bat
-
-# Linux / macOS:
-source venv/bin/activate
-
-# 4. Install library Flask dan Supabase Client di dalam environment
-pip install Flask supabase
+cd backend
 ```
 
-## 2. Konfigurasi Database Supabase
+### Buat dan aktifkan Virtual Environment
 
-Sebelum menjalankan aplikasi, pastikan kamu sudah membuat tabel di dashboard Supabase dengan ketentuan berikut:
+#### Windows
 
-* **Nama Tabel:** `mahasiswa`
-* **Keamanan (RLS):** Nonaktifkan (*Disabled*) Row Level Security pada tabel ini, atau buat kebijakan (*Policy*) akses publik agar aplikasi Flask dapat melakukan operasi CRUD.
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
 
-### Struktur Skema Kolom Tabel
+#### Mac/Linux
 
-| Nama Kolom | Tipe Data | Keterangan                                      |
-| ---------- | --------- | ----------------------------------------------- |
-| `id`       | `uuid`    | Primary Key, Default Value: `gen_random_uuid()` |
-| `nim`      | `text`    | Menyimpan nomor induk mahasiswa (unik)          |
-| `nama`     | `text`    | Menyimpan nama lengkap                          |
-| `prodi`    | `text`    | Menyimpan nama program studi                    |
-| `angkatan` | `integer` | Menyimpan tahun angkatan (contoh: 2024)         |
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
 
-> ⚠️ Penting: Buka file `app.py`, lalu sesuaikan variabel `url` dan `key` menggunakan kredensial API dari dashboard Supabase.
+### Instal dependensi
 
-## 3. Menjalankan Aplikasi
+```bash
+pip install -r requirements.txt
+```
 
-Pastikan Virtual Environment sudah aktif, kemudian jalankan:
+### Konfigurasi Environment Variables
+
+Buat file `.env` di dalam folder `backend/` lalu isi dengan kredensial Supabase Anda:
+
+```env
+SUPABASE_URL=https://<id-project-anda>.supabase.co
+SUPABASE_KEY=<kunci-anon-public-anda>
+```
+
+### Jalankan Server Backend
 
 ```bash
 python app.py
 ```
 
-Buka browser dan akses:
+Server API akan berjalan pada:
 
 ```text
 http://127.0.0.1:5000
 ```
+
+---
+
+## 2. Menjalankan Frontend
+
+Karena frontend dibuat menggunakan HTML, CSS, dan Vanilla JavaScript, Anda tidak memerlukan server tambahan seperti Node.js.
+
+1. Buka folder `frontend/`.
+2. Klik dua kali file `index.html`.
+3. File akan terbuka di browser (Chrome, Edge, Firefox, dan lainnya).
+4. Untuk pengalaman pengembangan yang lebih baik, gunakan ekstensi **Live Server** pada Visual Studio Code.
+
+---
+
+# Akun Uji Coba (Demo Login)
+
+Gunakan akun berikut untuk mencoba aplikasi:
+
+| Email                                     | Password |
+| ----------------------------------------- | -------- |
+| [ahmad@gmail.com](mailto:ahmad@gmail.com) | 12345    |
+
+---
+
+# Struktur Direktori
+
+```text
+AKADEMIK/
+│
+├── backend/                     # REST API Server
+│   ├── routes/                  # URL Endpoints (Flask Blueprints)
+│   ├── services/                # Logika Database (Supabase)
+│   ├── app.py                   # Entry Point Server
+│   ├── config.py                # Konfigurasi Database
+│   ├── requirements.txt         # Daftar Library Python
+│   └── .env                     # Kredensial Rahasia (Tidak di-push ke Git)
+│
+└── frontend/                    # Client UI
+    ├── index.html               # Halaman Login
+    ├── dashboard.html           # Halaman Dashboard
+    └── edit.html                # Halaman Edit Data
+```
+
+---
+
+## Catatan
+
+* Pastikan backend berjalan terlebih dahulu sebelum membuka frontend.
+* Jangan mengunggah file `.env` ke GitHub.
+* Simpan kredensial Supabase dengan aman.
+* Gunakan akun demo untuk pengujian awal sistem.
+
+---
+
+## Proyek ini dibuat untuk kebutuhan pembelajaran akademik kampus.

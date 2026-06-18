@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Sistem Akademik</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Konfigurasi Tailwind Dark Mode
+      tailwind.config = { darkMode: 'class' };
+      // Cek Tema Awal (Mencegah Flash Putih)
+      if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 antialiased min-h-screen flex items-center justify-center py-10 px-4 transition-colors duration-300">
+    <div class="max-w-md w-full bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-200/60 dark:border-slate-700 p-8 relative overflow-hidden transition-colors duration-300">
+      <div class="absolute top-0 left-0 w-full h-1.5 bg-indigo-600"></div>
+
+      <div class="text-center mb-8">
+        <div class="w-16 h-16 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Selamat Datang</h1>
+        <p class="text-slate-500 dark:text-slate-400 mt-1 text-sm">Silakan masuk ke akun Anda</p>
+      </div>
+
+      <form id="formLogin" class="space-y-5">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Email Akses</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
+              <i class="fa-regular fa-envelope"></i>
+            </div>
+            <input
+              type="email"
+              id="email"
+              required
+              placeholder="admin@kampus.com"
+              class="w-full bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg pl-10 pr-4 py-2.5 text-sm dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all duration-200"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Password</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
+              <i class="fa-solid fa-lock"></i>
+            </div>
+            <input
+              type="password"
+              id="password"
+              required
+              placeholder="••••••••"
+              class="w-full bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg pl-10 pr-4 py-2.5 text-sm dark:text-white focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all duration-200"
+            />
+          </div>
+        </div>
+
+        <button type="submit" id="btnSubmit" class="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-lg text-sm font-semibold shadow-sm hover:shadow transition-all duration-200 flex items-center justify-center gap-2">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Masuk Sistem
+        </button>
+      </form>
+    </div>
+
+    <script>
+      // 1. Ubah ke dashboard.html (Jika sudah ada token, langsung masuk ke dalam)
+      if (localStorage.getItem('token')) window.location.href = 'dashboard.html';
+
+      document.getElementById('formLogin').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const btnSubmit = document.getElementById('btnSubmit');
+        btnSubmit.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Memproses...';
+        btnSubmit.disabled = true;
+
+        const data = {
+          email: document.getElementById('email').value,
+          password: document.getElementById('password').value,
+        };
+
+        try {
+          const response = await fetch('http://127.0.0.1:5000/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+          const result = await response.json();
+
+          if (response.ok && result.status === 'success') {
+            localStorage.setItem('token', result.token);
+            Swal.fire({
+              title: 'Berhasil!',
+              text: result.message,
+              icon: 'success',
+              timer: 1500,
+              showConfirmButton: false,
+              background: document.documentElement.classList.contains('dark') ? '#1e293b' : '#fff',
+              color: document.documentElement.classList.contains('dark') ? '#fff' : '#545454',
+            }).then(() => {
+              // 2. Ubah ke dashboard.html (Setelah sukses login, masuk ke sistem)
+              window.location.href = 'dashboard.html';
+            });
+          } else {
+            Swal.fire({
+              title: 'Gagal Login',
+              text: result.message,
+              icon: 'error',
+              background: document.documentElement.classList.contains('dark') ? '#1e293b' : '#fff',
+              color: document.documentElement.classList.contains('dark') ? '#fff' : '#545454',
+            });
+            btnSubmit.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i> Masuk Sistem';
+            btnSubmit.disabled = false;
+          }
+        } catch (error) {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Tidak dapat terhubung ke server.',
+            icon: 'error',
+            background: document.documentElement.classList.contains('dark') ? '#1e293b' : '#fff',
+            color: document.documentElement.classList.contains('dark') ? '#fff' : '#545454',
+          });
+          btnSubmit.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i> Masuk Sistem';
+          btnSubmit.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>
